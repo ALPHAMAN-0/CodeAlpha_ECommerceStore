@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Env files
+.env
+.env.local
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
+
+# Docker
+mongo-data/

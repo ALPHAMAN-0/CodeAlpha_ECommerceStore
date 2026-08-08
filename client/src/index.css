@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: 'liga' 1, 'kern' 1;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+  }
+
+  ::selection {
+    @apply bg-terracotta-200 text-terracotta-900;
+  }
+
+  /* Slim, warm-toned scrollbar so the demo looks intentional, not default OS chrome. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: theme('colors.terracotta.200');
+    border-radius: 9999px;
+    border: 2px solid theme('colors.paper');
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: theme('colors.terracotta.300');
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide transition-all duration-200 ease-out-soft disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-terracotta-500 text-paper shadow-card hover:bg-terracotta-600 hover:shadow-card-hover active:bg-terracotta-700;
+  }
+  .btn-secondary {
+    @apply btn bg-transparent text-ink ring-1 ring-inset ring-ink/15 hover:bg-ink/[0.04] active:bg-ink/[0.08];
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-terracotta-600 hover:bg-terracotta-50;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-ink/15 bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink/35 transition-colors focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-xs font-medium uppercase tracking-wider text-ink-soft;
+  }
+
+  .card-surface {
+    @apply rounded-xl bg-white shadow-card transition-shadow duration-300 ease-out-soft;
+  }
+
+  .section-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-600;
+  }
+}
