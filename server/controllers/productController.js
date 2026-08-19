@@ -5,7 +5,11 @@ import asyncHandler from '../utils/asyncHandler.js';
 // @route   GET /api/products?category=&search=&page=&limit=
 // @access  Public
 export const getProducts = asyncHandler(async (req, res) => {
-  const { category, search } = req.query;
+  // Coerce query params to strings and ignore non-string values, so bracketed
+  // params like ?category[$ne]= (which qs parses into objects) can't inject
+  // Mongo query operators into the filter.
+  const category = typeof req.query.category === 'string' ? req.query.category : undefined;
+  const search = typeof req.query.search === 'string' ? req.query.search : undefined;
 
   const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
   const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 12, 1), 100);
@@ -16,7 +20,10 @@ export const getProducts = asyncHandler(async (req, res) => {
     filter.category = category;
   }
   if (search) {
-    filter.name = { $regex: search, $options: 'i' };
+    // Escape regex metacharacters so a user searching for "(" or "*abc" is
+    // matched literally instead of crashing regex compilation (500 / ReDoS).
+    const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    filter.name = { $regex: escaped, $options: 'i' };
   }
 
   const [products, total] = await Promise.all([

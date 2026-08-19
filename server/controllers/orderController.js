@@ -70,14 +70,22 @@ export const createOrder = asyncHandler(async (req, res) => {
 
   const itemsPrice = orderItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const order = await Order.create({
-    user: req.user._id,
-    items: orderItems,
-    shippingAddress,
-    itemsPrice,
-    totalPrice: itemsPrice,
-    status: 'pending',
-  });
+  let order;
+  try {
+    order = await Order.create({
+      user: req.user._id,
+      items: orderItems,
+      shippingAddress,
+      itemsPrice,
+      totalPrice: itemsPrice,
+      status: 'pending',
+    });
+  } catch (error) {
+    // Stock was already decremented above; if persisting the order fails
+    // (e.g. a transient DB error) put the stock back so it isn't silently lost.
+    await rollbackStock(processedItems);
+    throw error;
+  }
 
   res.status(201).json({
     success: true,

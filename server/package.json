@@ -4,6 +4,9 @@
   "description": "Backend API for the CodeAlpha MERN e-commerce store (Task 1)",
   "type": "module",
   "main": "server.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",

@@ -1,6 +1,16 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
+// VITE_API_URL is inlined at build time. In dev we fall back to the local API;
+// in a production build a missing value would otherwise silently ship a dead
+// localhost URL to visitors, so fail loudly instead.
+const baseURL =
+  import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5001/api' : undefined)
+
+if (!baseURL) {
+  throw new Error(
+    'VITE_API_URL is not set — define it in the deploy environment (e.g. Vercel) before building.',
+  )
+}
 
 const axiosClient = axios.create({ baseURL })
 
