@@ -5,12 +5,19 @@ A full-stack e-commerce store built for the CodeAlpha Full Stack Development int
 ## Architecture / How it Works
 
 ```mermaid
-flowchart LR
-    A[User] --> B[Codealpha Ecommercestore]
-    B --> C{Logic}
-    C --> D[(Data)]
-    C --> E[Output]
-    D --> C
+flowchart TD
+  ClientApp --> ClientPages
+  ClientApp --> ClientComponents
+  ClientApp --> ClientState
+  ClientPages --> ClientComponents
+  ClientPages --> ClientState
+  ClientState --> ClientAPI
+  ClientAPI --> ServerApp
+  ServerApp --> ServerRoutes
+  ServerRoutes --> ServerMiddleware
+  ServerRoutes --> ServerControllers
+  ServerControllers --> ServerModels
+  ServerModels --> MongoDB
 ```
 
 
